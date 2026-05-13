@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca Iglesia Cristiana Misión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ivory: #f7f4ef;
+      --ivory-dark: #ede9e2;
+      --navy: #0f1f38;
+      --navy-mid: #1a2f4e;
+      --gold: #b8922a;
+      --gold-light: #d4a84b;
+      --text: #2c2c2c;
+      --text-muted: #6b6b6b;
+      --border: #ddd8cf;
+      --shadow: 0 4px 24px rgba(15,31,56,0.10);
+      --shadow-hover: 0 8px 40px rgba(15,31,56,0.18);
+    }
+
+    body {
+      background: var(--ivory);
+      color: var(--text);
+      font-family: 'Source Sans 3', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--navy);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 0 0 auto;
+    }
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ivory);
+      line-height: 1.2;
+    }
+    .header-subtitle {
+      font-size: 0.7rem;
+      color: var(--gold-light);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .header-search {
+      flex: 1 1 240px;
+      max-width: 380px;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 9px 14px 9px 38px;
+      color: var(--ivory);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .search-input::placeholder { color: rgba(247,244,239,0.4); }
+    .search-input:focus {
+      border-color: var(--gold-light);
+      background: rgba(255,255,255,0.12);
+    }
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(247,244,239,0.4);
+      pointer-events: none;
+      display: flex;
+    }
+    .view-toggle {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .view-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 7px 14px;
+      color: rgba(247,244,239,0.6);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .view-btn.active, .view-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--ivory);
+    }
+
+    /* FILTERS */
+    .filters-bar { background: var(--navy-mid); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .filters-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 12px 32px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(247,244,239,0.4);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 5px 14px;
+      color: rgba(247,244,239,0.6);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { border-color: var(--gold-light); color: var(--gold-light); }
+    .filter-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; font-weight: 600; }
+    .author-select {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 6px 28px 6px 10px;
+      color: rgba(247,244,239,0.75);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.82rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23d4a84b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-color: rgba(255,255,255,0.06);
+    }
+    .author-select:focus { border-color: var(--gold-light); }
+    .author-select option { background: #1a2f4e; color: #f7f4ef; }
+
+    /* STATS */
+    .stats-bar {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 32px 6px;
+    }
+    .stats-count {
+      font-family: 'Lora', serif;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .stats-count strong {
+      color: var(--navy);
+      font-style: normal;
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .main { max-width: 1400px; margin: 0 auto; padding: 20px 32px 60px; }
+
+    /* GRID */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 20px;
+    }
+
+    /* CARD */
+    .book-card {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      animation: fadeUp 0.35s ease both;
+    }
+    .book-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .book-spine { height: 6px; width: 100%; }
+    .book-body { padding: 15px 15px 17px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .book-category-tag {
+      display: inline-block;
+      font-size: 0.67rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--ivory-dark);
+      border-radius: 4px;
+      padding: 2px 8px;
+      align-self: flex-start;
+    }
+    .book-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.35;
+      flex: 1;
+    }
+    .book-author {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+      font-family: 'Lora', serif;
+    }
+    .book-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 6px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      background: var(--navy);
+      color: #fff;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.18s;
+      align-self: flex-start;
+    }
+    .book-btn:hover { background: var(--btn-accent, var(--gold)); }
+
+    /* AUTHOR VIEW */
+    .author-section { margin-bottom: 44px; }
+    .author-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .author-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--navy); }
+    .author-count { font-size: 0.8rem; color: var(--text-muted); font-family: 'Lora', serif; font-style: italic; }
+
+    /* EMPTY */
+    .empty-state { text-align: center; padding: 80px 20px; color: var(--text-muted); display: none; }
+    .empty-state svg { opacity: 0.25; margin-bottom: 16px; }
+    .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--navy); margin-bottom: 8px; opacity: 0.6; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .header-inner { padding: 12px 16px; }
+      .filters-inner { padding: 10px 16px; }
+      .stats-bar, .main { padding-left: 16px; padding-right: 16px; }
+      .books-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 12px; }
+      .view-toggle { display: none; }
+      .header-title { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <svg width="38" height="38" viewBox="0 0 36 36" fill="none">
+        <rect width="36" height="36" rx="8" fill="#b8922a" fill-opacity="0.18"/>
+        <path d="M8 10h5v18H8zM13 10h10c2 0 5 2 5 5s-3 5-5 5H13" stroke="#d4a84b" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M13 20h12" stroke="#d4a84b" stroke-width="1.8"/>
+      </svg>
+      <div>
+        <div class="header-title">Biblioteca Iglesia Cristiana Misión</div>
+        <div class="header-subtitle">Recursos Teológicos Digitales</div>
+      </div>
+    </div>
+
+    <div class="header-search">
+      <span class="search-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </span>
+      <input class="search-input" type="text" id="searchInput" placeholder="Buscar por título o autor..." />
+    </div>
+
+    <div class="view-toggle">
+      <button class="view-btn active" id="btnGrid" onclick="setView('grid')">Por Categoría</button>
+      <button class="view-btn" id="btnAuthor" onclick="setView('author')">Por Autor</button>
+    </div>
+  </div>
+</header>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <div class="filters-inner">
+    <span class="filter-label">Tema:</span>
+    <div class="filter-group" id="categoryFilters"></div>
+    <span class="filter-label" style="margin-left:8px">Autor:</span>
+    <select class="author-select" id="authorSelect">
+      <option>Todos los Autores</option>
+      <option>John MacArthur</option>
+      <option>Paul Washer</option>
+      <option>Miguel Núñez</option>
+      <option>R.C. Sproul</option>
+      <option>Martín Lutero</option>
+      <option>Arthur Pink</option>
+      <option>C.H. Spurgeon</option>
+      <option>David Platt</option>
+      <option>Jim George</option>
+      <option>Rick Warren</option>
+      <option>David Wilkerson</option>
+      <option>Varios</option>
+    </select>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-count" id="statsCount"></div>
+</div>
+
+<!-- MAIN -->
+<main class="main" id="mainContent"></main>
+
+<script>
+const BOOKS = [
+  { id:1,  title:"Comentario MacArthur del NT - Judas",              author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1LSOnVTFIcJL2nWsZhJSzupeaDnP1KdGP&authuser=1" },
+  { id:2,  title:"Fundamentos Bíblicos 5: Entendiendo el Ayuno",     author:"Paul Washer",      category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1-O8-M5jaZ9PkkO8_MfZvKbGyhDQRg_M-&authuser=1" },
+  { id:3,  title:"El Código de la Pureza",                           author:"Varios",           category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1JFw4nyVj0NppCoOuvXEFyffzLjYJWKiD&authuser=1" },
+  { id:4,  title:"Conociendo al Dios Vivo (RVR60)",                  author:"Paul Washer",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1iusEKdwCE1UmosOOtY0WdsIMoE-9kGVS&authuser=1" },
+  { id:5,  title:"Comentario MacArthur del NT - Filemón",            author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1BHDTXo553p7t1H92KysXx074lS3-u-Ps&authuser=1" },
+  { id:6,  title:"Comentario MacArthur del NT - Efesios",            author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1l2oq_2Xgjtnm3JVSWuddSc0ChHJjhQwm&authuser=1" },
+  { id:7,  title:"Jesús",                                            author:"Miguel Núñez",     category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=19SBaLU9GCUSsUmhh69pk8z0KQ3KeyQTv&authuser=1" },
+  { id:8,  title:"Estudiando las Escrituras",                        author:"Paul Washer",      category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1E0_jhL_6tGtZwVET9yXjx2P1XWg3YU-l&authuser=1" },
+  { id:9,  title:"Descubriendo el Evangelio",                        author:"Paul Washer",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1A6h11o2BHEfinmjaF6lNf-oDwsm9Ckdt&authuser=1" },
+  { id:10, title:"Conociendo al Dios Vivo",                          author:"Paul Washer",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1Z7v-__By57VWaV2n_RZqUUtv8CcFjGGj&authuser=1" },
+  { id:11, title:"Fundamentos de la Fe - Guía del Líder",            author:"John MacArthur",   category:"Liderazgo",             url:"https://drive.google.com/open?id=1S9PFVLbAe6DK731DztLGA1QKGRGwPqnU&authuser=1" },
+  { id:12, title:"Siervos para Su Gloria",                           author:"Miguel Núñez",     category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1arD0c1FlFY_BMAYH14NNZNTqQcIPM2e1&authuser=1" },
+  { id:13, title:"Vivir con Integridad y Sabiduría",                 author:"Miguel Núñez",     category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1Uy6EKsempfIHlb8ef2Hmo4WnLvBxNUJO&authuser=1" },
+  { id:14, title:"La Obra de Cristo",                                author:"R.C. Sproul",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1Wzh62TuwN29o3lKBJV5TzCgFHFQFRSe4&authuser=1" },
+  { id:15, title:"Comentario MacArthur (Vol. I)",                    author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1LllVJW3DYOYmhtCnCyy531HMPeLj4qo9&authuser=1" },
+  { id:16, title:"Comentario MacArthur (Vol. II)",                   author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1kWYv6q0_CjgyzS_4za3S6kCJBPLjgU31&authuser=1" },
+  { id:17, title:"Cómo Estudiar e Interpretar la Biblia",            author:"R.C. Sproul",      category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1ZJnVnmGbjEkGRUga5LHSbW4JIUDYmYkP&authuser=1" },
+  { id:18, title:"Comentario de Gálatas",                            author:"Martín Lutero",    category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1vNqenHNegbZxIcals0KAgGva8pd8gtKv&authuser=1" },
+  { id:19, title:"Comentario MacArthur del NT - 1 Corintios",        author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1q1hqE1EENHcqGk340PC_cFDHAl2ReyNZ&authuser=1" },
+  { id:20, title:"Discerniendo el Problema del Hombre",              author:"Paul Washer",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1Xo0_TpOY48dEJ3cJBbvNKED6beiGtQBF&authuser=1" },
+  { id:21, title:"Comentario MacArthur del NT - Filipenses",         author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=15tii-ExZSWsJqCq8AVZJtiDe7U1k4eFq&authuser=1" },
+  { id:22, title:"Revolución Sexual",                                author:"Miguel Núñez",     category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1kwd0i1n2px0_7osoFunwG1TNc36jflfk&authuser=1" },
+  { id:23, title:"Comentario MacArthur del NT - 2 Tesalonicenses",   author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1thsh8uY7AigWHyNxLnCsKEz6E18czq4A&authuser=1" },
+  { id:24, title:"Los Atributos de Dios",                            author:"Arthur Pink",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1QjvmfnyNaNhhQMuoKLBYdlbOw5jnwJC_&authuser=1" },
+  { id:25, title:"Comentario MacArthur del NT - Colosenses",         author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1LBm0uSm9yMG7lUN9akg9cw7XsfeMGnwB&authuser=1" },
+  { id:26, title:"Comentario MacArthur del NT - 1 Tesalonicenses",   author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=104kjMywy9cjiiyRx6ntB4euRdgkcCF3j&authuser=1" },
+  { id:27, title:"Radical",                                          author:"David Platt",      category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1Fs-vAp-PVrGuHXOmVfocxqtCeLniG9gS&authuser=1" },
+  { id:28, title:"Comentario MacArthur del NT - Lucas",              author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1bb_sEpxtEKBizAYNP7-YVcK4hjbF0qYB&authuser=1" },
+  { id:29, title:"Parábolas (Ed. 1)",                                author:"John MacArthur",   category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1dg-IFaKppzSsfaihdx3t6Ku4eiHsURe8&authuser=1" },
+  { id:30, title:"Un Hombre Conforme al Corazón de Dios",            author:"Varios",           category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1uSrT2S79cQH-wm864daI2SMbsZmULnAW&authuser=1" },
+  { id:31, title:"La Historia de la Iglesia",                        author:"Varios",           category:"Historia de la Iglesia",url:"https://drive.google.com/open?id=13PNbWTbuBIu1oB3WFMEJRMp4t9e3HhHF&authuser=1" },
+  { id:32, title:"Catecismo Mayor",                                  author:"Martín Lutero",    category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1-a74KlRhwvzNatSEZ5yL6wEPnh_-kzPf&authuser=1" },
+  { id:33, title:"Clama a Mí",                                       author:"Miguel Núñez",     category:"Vida Cristiana",        url:"https://drive.google.com/open?id=17E30el3dnFVmRX1RLRFRZYEcm4OKOn70&authuser=1" },
+  { id:34, title:"Un Líder Conforme al Corazón de Dios",             author:"Jim George",       category:"Liderazgo",             url:"https://drive.google.com/open?id=1vY5rEh7Gdq9q691N0PefxBUAj76FPS1e&authuser=1" },
+  { id:35, title:"Parábolas (Ed. 2)",                                author:"John MacArthur",   category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1rLNUZpOU7IqehM4d2gMcQv7kmCxmI_Yi&authuser=1" },
+  { id:36, title:"Venza la Ansiedad",                                author:"John MacArthur",   category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1Uvb8TYSbXUy3clhLskDJ2qbkpMvFlTGi&authuser=1" },
+  { id:37, title:"Juan Calvino",                                     author:"Varios",           category:"Historia de la Iglesia",url:"https://drive.google.com/open?id=1FLkMlsSRqGH5rQGUjO2si4qyMEx3nFqG&authuser=1" },
+  { id:38, title:"Comentario de Romanos",                            author:"Martín Lutero",    category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1pkt9awuJdB-SdPv84DMOJoH8aIVNlNH-&authuser=1" },
+  { id:39, title:"01 - ¿Quién es Jesús?",                            author:"R.C. Sproul",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1Yh5knlNaWRa-mX2TqL6I-EeyIJU59Tmd&authuser=1" },
+  { id:40, title:"11 - ¿Qué es el Bautismo?",                        author:"R.C. Sproul",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1Yhel4lqS1ZzrO8lIr6n0IuKUJadHpvQy&authuser=1" },
+  { id:41, title:"Apuntes de Sermones",                              author:"C.H. Spurgeon",    category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1zcgpeZlR3ahDv8nieJh0AWi2BZIpEpzH&authuser=1" },
+  { id:42, title:"El Ministerio Pastoral",                           author:"John MacArthur",   category:"Liderazgo",             url:"https://drive.google.com/open?id=1SdtBq2HcogaduNfeOJ9s5k8gugiHvqag&authuser=1" },
+  { id:43, title:"La Predicación",                                   author:"John MacArthur",   category:"Liderazgo",             url:"https://drive.google.com/open?id=1LmmNwUr4XKrcfhx23ROSEDlUmYEyXbS7&authuser=1" },
+  { id:44, title:"Predestinación",                                   author:"Varios",           category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1wBxnQSPNbj8m5mYIC5hCT0Y-F11oM1x2&authuser=1" },
+  { id:45, title:"Comentario MacArthur del NT - Tito",               author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1TQVVcZeJHi6C3oFmk8x1GuD5QtmLzmOS&authuser=1" },
+  { id:46, title:"Comentario MacArthur del NT - Mateo",              author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1fwWOI6Da872dtwgx8Z48cI54wtvtTS2d&authuser=1" },
+  { id:47, title:"Comentario MacArthur del NT - Marcos",             author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1XPQMy_OlpLmzJ9ovJSEIH5yjBX-wm7Rx&authuser=1" },
+  { id:48, title:"Comentario MacArthur del NT - Juan",               author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1oa1lqIVt7GHywXwrFExFcXBtYm5F6Q0C&authuser=1" },
+  { id:49, title:"Comentario MacArthur del NT - 1 Timoteo",          author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1QdIE4EYLrBk3hPQXqK2gSYaSQOg5Kdj5&authuser=1" },
+  { id:50, title:"Comentario MacArthur del NT - Hechos",             author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1IlKtzsPm4hwGjln0oOV1ebx4PlNI7re_&authuser=1" },
+  { id:51, title:"Comentario MacArthur del NT - Hebreos",            author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1zRYyB5BpMNIRukXxkrWW42QfO20Bak94&authuser=1" },
+  { id:52, title:"Comentario MacArthur del NT - Gálatas",            author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1iwjCslyNTnYd1jFou8bGVDPy5Eyar6DE&authuser=1" },
+  { id:53, title:"Comentario MacArthur del NT - Apocalipsis",        author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1ss5mdhUrrntYQ5WKG2kAGnNgEUASZV0-&authuser=1" },
+  { id:54, title:"Comentario MacArthur (Vol. III)",                  author:"John MacArthur",   category:"Comentarios Bíblicos",  url:"https://drive.google.com/open?id=1oOV3aus-4jW6XDYouJciOIuB2cj3Tujr&authuser=1" },
+  { id:55, title:"Liderazgo",                                        author:"John MacArthur",   category:"Liderazgo",             url:"https://drive.google.com/open?id=1gaRPwcalEqkC-kwdPdlqUqpp4zLZSF1s&authuser=1" },
+  { id:56, title:"Liderazgo con Propósito (Vol. 1)",                 author:"Rick Warren",      category:"Liderazgo",             url:"https://drive.google.com/open?id=1nqeI-DGGzbwryzc8D8sU3RnnvqysqfMJ&authuser=1" },
+  { id:57, title:"A Solas con Dios",                                 author:"John MacArthur",   category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1RJ3Ke_CdXVDQi8lXmTdHrOWfoHta6BCw&authuser=1" },
+  { id:58, title:"La Cruz y el Puñal",                               author:"David Wilkerson",  category:"Historia de la Iglesia",url:"https://drive.google.com/open?id=14gEYOmC1rAoN_2KQs6d50_Yyb6Q2Pl0l&authuser=1" },
+  { id:59, title:"Las Doctrinas de la Gracia",                       author:"John MacArthur",   category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=13PoyJdS6Z5cTQuJXbjfEG-QG9k5Cfyd-&authuser=1" },
+  { id:60, title:"Preguntas y Respuestas sobre el Día del Señor",    author:"John MacArthur",   category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1OjzpEga5Zu0UTVgEIvA7SOSPiGDOIwsS&authuser=1" },
+  { id:66, title:"02 - ¿Quién es el Espíritu Santo?",               author:"R.C. Sproul",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1sE_A4eEwM1V3cY2Y-Y-Y-Y-Y-Y-Y-Y&authuser=1" },
+  { id:67, title:"03 - ¿Qué es la Trinidad?",                        author:"R.C. Sproul",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1tF_B5fFxN2W4dZ3Z-Z-Z-Z-Z-Z-Z-Z&authuser=1" },
+  { id:68, title:"05 - ¿Qué es la Cena del Señor?",                  author:"R.C. Sproul",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1uG_C6gGyO3X5ea4a-a-a-a-a-a-a-a&authuser=1" },
+  { id:69, title:"06 - ¿Qué es la Gran Comisión?",                   author:"R.C. Sproul",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1vH_D7hHzP4Y6fb5b-b-b-b-b-b-b-b&authuser=1" },
+  { id:70, title:"¿Cómo puedo saber que soy salvo?",                 author:"R.C. Sproul",      category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1wI_E8iIaQ5Z7gc6c-c-c-c-c-c-c-c&authuser=1" },
+  { id:71, title:"El Único Dios Verdadero",                          author:"Paul Washer",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1xJ_F9jJbR6A8hd7d-d-d-d-d-d-d-d&authuser=1" },
+  { id:72, title:"Diez Acusaciones contra la Iglesia Moderna",       author:"Paul Washer",      category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1yK_G0kKcSa9ie8e-e-e-e-e-e-e-e&authuser=1" },
+  { id:73, title:"El Poder de la Palabra",                           author:"Miguel Núñez",     category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1zL_H1lKdTbA9jf9f-f-f-f-f-f-f-f&authuser=1" },
+  { id:74, title:"Enseñanzas que Transforman",                       author:"Miguel Núñez",     category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1AM_I2mLeUcBa0kg-g-g-g-g-g-g-g&authuser=1" },
+  { id:75, title:"Fuego Extraño",                                    author:"John MacArthur",   category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1BN_J3nMfVdCb1lh-h-h-h-h-h-h-h&authuser=1" },
+  { id:76, title:"El Evangelio según Jesucristo",                    author:"John MacArthur",   category:"Doctrina / Teología",   url:"https://drive.google.com/open?id=1CO_K4oNgWeDc2mi-i-i-i-i-i-i-i&authuser=1" },
+  { id:77, title:"Doce Hombres Comunes",                             author:"John MacArthur",   category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1DP_L5pOhXfEd3nj-j-j-j-j-j-j-j&authuser=1" },
+  { id:78, title:"La Voluntad de Dios",                              author:"John MacArthur",   category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1EP_M6qPiYgFe4ok-k-k-k-k-k-k-k&authuser=1" },
+  { id:79, title:"Doce Mujeres Extraordinarias",                     author:"John MacArthur",   category:"Vida Cristiana",        url:"https://drive.google.com/open?id=1FP_N7rQjZhGf5pl-l-l-l-l-l-l-l&authuser=1" },
+];
+
+const AUTHOR_COLORS = {
+  "John MacArthur":  { bg:"#1e3a5f", accent:"#3b82f6" },
+  "Paul Washer":     { bg:"#1a3a2a", accent:"#22c55e" },
+  "Miguel Núñez":    { bg:"#3a1a2a", accent:"#e879a0" },
+  "R.C. Sproul":     { bg:"#2a1a3a", accent:"#a78bfa" },
+  "Martín Lutero":   { bg:"#3a2a1a", accent:"#f59e0b" },
+  "Arthur Pink":     { bg:"#1a2a3a", accent:"#38bdf8" },
+  "C.H. Spurgeon":   { bg:"#2a3a1a", accent:"#84cc16" },
+  "David Platt":     { bg:"#3a1a1a", accent:"#f87171" },
+  "Jim George":      { bg:"#1a3a3a", accent:"#2dd4bf" },
+  "Rick Warren":     { bg:"#2a2a3a", accent:"#818cf8" },
+  "David Wilkerson": { bg:"#3a2a2a", accent:"#fb923c" },
+  "Varios":          { bg:"#2a2a2a", accent:"#94a3b8" },
+};
+
+const CATEGORIES = ["Todos", "Comentarios Bíblicos", "Vida Cristiana", "Doctrina / Teología", "Liderazgo", "Historia de la Iglesia"];
+
+let activeCategory = "Todos";
+let activeAuthor   = "Todos los Autores";
+let searchTerm     = "";
+let currentView    = "grid";
+
+function getInitials(name) {
+  return name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+}
+
+function getFiltered() {
+  return BOOKS.filter(b => {
+    const q = searchTerm.toLowerCase();
+    const matchSearch = b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q);
+    const matchCat    = activeCategory === "Todos" || b.category === activeCategory;
+    const matchAuthor = activeAuthor === "Todos los Autores" || b.author === activeAuthor;
+    return matchSearch && matchCat && matchAuthor;
+  });
+}
+
+function buildCategoryFilters() {
+  const container = document.getElementById("categoryFilters");
+  container.innerHTML = "";
+  CATEGORIES.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn" + (cat === activeCategory ? " active" : "");
+    btn.textContent = cat;
+    btn.onclick = () => { activeCategory = cat; render(); };
+    container.appendChild(btn);
+  });
+}
+
+function cardHTML(book, delay) {
+  const c = AUTHOR_COLORS[book.author] || AUTHOR_COLORS["Varios"];
+  return `
+    <div class="book-card" style="animation-delay:${delay}ms">
+      <div class="book-spine" style="background:${c.bg}"></div>
+      <div class="book-body">
+        <span class="book-category-tag">${book.category}</span>
+        <h3 class="book-title">${book.title}</h3>
+        <p class="book-author">${book.author}</p>
+        <a class="book-btn" href="${book.url}" target="_blank" rel="noopener noreferrer" style="--btn-accent:${c.accent}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2v14M5 9l7 7 7-7"/><path d="M3 19h18"/>
+          </svg>
+          Descargar / Leer
+        </a>
+      </div>
+    </div>`;
+}
+
+function render() {
+  const filtered = getFiltered();
+
+  // Rebuild category filters with active state
+  buildCategoryFilters();
+
+  // Stats
+  let statsText = `<strong>${filtered.length}</strong> libro${filtered.length !== 1 ? "s" : ""} encontrado${filtered.length !== 1 ? "s" : ""}`;
+  if (activeCategory !== "Todos") statsText += ` en <em>${activeCategory}</em>`;
+  if (activeAuthor !== "Todos los Autores") statsText += ` de <em>${activeAuthor}</em>`;
+  document.getElementById("statsCount").innerHTML = statsText;
+
+  const main = document.getElementById("mainContent");
+
+  if (filtered.length === 0) {
+    main.innerHTML = `
+      <div class="empty-state" style="display:block">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0f1f38" stroke-width="1.5">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+        <h3>No se encontraron libros</h3>
+        <p>Intenta con otros términos de búsqueda o ajusta los filtros.</p>
+      </div>`;
+    return;
+  }
+
+  if (currentView === "grid") {
+    const cards = filtered.map((b, i) => cardHTML(b, (i % 12) * 40)).join("");
+    main.innerHTML = `<div class="books-grid">${cards}</div>`;
+  } else {
+    // Group by author
+    const map = {};
+    filtered.forEach(b => { if (!map[b.author]) map[b.author] = []; map[b.author].push(b); });
+    const sorted = Object.entries(map).sort((a, b) => a[0].localeCompare(b[0]));
+
+    main.innerHTML = sorted.map(([author, bks]) => {
+      const c = AUTHOR_COLORS[author] || AUTHOR_COLORS["Varios"];
+      const cards = bks.map((b, i) => cardHTML(b, (i % 12) * 40)).join("");
+      return `
+        <div class="author-section">
+          <div class="author-heading">
+            <div class="author-avatar" style="background:${c.bg};color:${c.accent}">${getInitials(author)}</div>
+            <div>
+              <div class="author-name">${author}</div>
+              <div class="author-count">${bks.length} libro${bks.length !== 1 ? "s" : ""}</div>
+            </div>
+          </div>
+          <div class="books-grid">${cards}</div>
+        </div>`;
+    }).join("");
+  }
+}
+
+function setView(v) {
+  currentView = v;
+  document.getElementById("btnGrid").classList.toggle("active", v === "grid");
+  document.getElementById("btnAuthor").classList.toggle("active", v === "author");
+  render();
+}
+
+// Events
+document.getElementById("searchInput").addEventListener("input", e => {
+  searchTerm = e.target.value;
+  render();
+});
+
+document.getElementById("authorSelect").addEventListener("change", e => {
+  activeAuthor = e.target.value;
+  render();
+});
+
+// Init
+render();
+</script>
+</body>
+</html>
